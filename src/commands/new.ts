@@ -1,6 +1,5 @@
 import fs from "fs-extra";
 import path from "path";
-import chalk from "chalk";
 
 interface NewCommandOptions {
   orm: string;
@@ -36,8 +35,8 @@ export async function createNewProject(projectName: string) {
 
     replacePlaceholders(targetDir);
 
-    console.log(`📦 Proyecto creado en ${chalk.cyan(projectName)}`);
-    console.log(`👉 Ejecuta:\n  cd ${projectName}\n  npm install\n  npm run dev`);
+    console.log(`📦 Proyecto creado en ${projectName}`);
+    console.log(`� Ejecuta:\n  cd ${projectName}\n  npm install\n  npm run dev`);
   } catch (error) {
     console.error("❌ Error al crear el proyecto:", error);
   }
@@ -49,23 +48,16 @@ export async function handleNewCommand(projectName: string, options: NewCommandO
 
     // Verificar si ya existe
     if (fs.existsSync(targetDir)) {
-      console.log(chalk.red(`❌ La carpeta ${projectName} ya existe.`));
+      console.error(`❌ La carpeta ${projectName} ya existe.`);
       process.exit(1);
     }
 
     // Copiar template base
     await createNewProject(projectName) // fs.copy(templateDir, targetDir);
-    console.log(chalk.green(`📦 Proyecto creado en ${projectName}`));
-
-/*     // Actualizar package.json del proyecto
-    const pkgPath = path.join(targetDir, "package.json");
-    const pkg = await fs.readJSON(pkgPath);
-    pkg.name = projectName;
-    await fs.writeJSON(pkgPath, pkg, { spaces: 2 }); */
 
     // Si usa Prisma
     if (options.orm === "prisma") {
-      console.log(chalk.yellow("⚙️  Integrando Prisma..."));
+      console.log("⚙️  Integrando Prisma...");
       const prismaSchema = `
 generator client {
   provider = "prisma-client-js"
@@ -84,15 +76,15 @@ model User {
 `;
       await fs.ensureDir(path.join(targetDir, "prisma"));
       await fs.writeFile(path.join(targetDir, "prisma/schema.prisma"), prismaSchema.trim());
-      console.log(chalk.green("✅ Prisma configurado"));
+      console.log("✅ Prisma configurado");
     }
 
-    console.log(chalk.cyan("\n🚀 Instrucciones:"));
-    console.log(chalk.white(`cd ${projectName}`));
-    console.log(chalk.white("npm install"));
-    console.log(chalk.white("npm run dev"));
-    console.log(chalk.gray("\n¡Disfruta tu proyecto Breve ☕!\n"));
+    console.log("\n🚀 Instrucciones:");
+    console.log(`cd ${projectName}`);
+    console.log("npm install");
+    console.log("npm run dev");
+    console.log("\n¡Disfruta tu proyecto Breve ☕!\n");
   } catch (error: any) {
-    console.error(chalk.red("❌ Error al crear el proyecto:"), error.message);
+    console.error("❌ Error al crear el proyecto:", error.message);
   }
 }

@@ -1,6 +1,5 @@
 import fs from "fs-extra";
 import path from "path";
-import chalk from "chalk";
 import { capitalize, pascalCase } from "../utils/strings";
 
 const TEMPLATE_DIR = path.resolve(__dirname, "../templates");
@@ -17,8 +16,8 @@ export async function handleGenerateCommand(type: string, name: string) {
     ];
 
     if (!supportedTypes.includes(type)) {
-      console.log(chalk.red(`❌ Tipo no soportado: ${type}`));
-      console.log(chalk.yellow(`Tipos soportados: ${supportedTypes.join(", ")}`));
+      console.error(`❌ Tipo no soportado: ${type}`);
+      console.warn(`Tipos soportados: ${supportedTypes.join(", ")}`);
       process.exit(1);
     }
 
@@ -31,7 +30,7 @@ export async function handleGenerateCommand(type: string, name: string) {
     await fs.ensureDir(destDir);
 
     if (!fs.existsSync(templatePath)) {
-      console.log(chalk.red(`❌ No se encontró la plantilla para '${type}'`));
+      console.error(`❌ No se encontró la plantilla para '${type}'`);
       process.exit(1);
     }
 
@@ -42,9 +41,9 @@ export async function handleGenerateCommand(type: string, name: string) {
       .replace(/__CLASS_NAME__/g, pascalName);
 
     await fs.writeFile(destPath, template);
-    console.log(chalk.green(`✅ ${type} '${fileName}' creado en src/${type}s/`));
+    console.log(`✅ ${type} '${fileName}' creado en src/${type}s/`);
   } catch (error: any) {
-    console.error(chalk.red("❌ Error generando archivo:"), error.message);
+    console.error("❌ Error generando archivo:", error.message);
   }
 }
 
@@ -56,7 +55,7 @@ export async function generateModule(name: string) {
   const capitalized = capitalize(name);
 
   if (fs.existsSync(moduleDir)) {
-    console.log(chalk.red(`❌ El módulo ${name} ya existe`));
+    console.error(`❌ El módulo ${name} ya existe`);
     return;
   }
 
@@ -106,5 +105,5 @@ export default router;
     await fs.writeFile(routesPath, routesContent);
   }
 
-  console.log(chalk.green(`✅ Módulo '${name}' creado y registrado exitosamente.`));
+  console.log(`✅ Módulo '${name}' creado y registrado exitosamente.`);
 }
