@@ -1,0 +1,11 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+module.exports = {
+  preset: "ts-jest/presets/default-esm",
+  testEnvironment: "node",
+  testMatch: ["**/__tests__/**/*.ts", "**/?(*.)+(spec|test).ts"],
+  clearMocks: true,
+  transformIgnorePatterns: ["/node_modules/(?!chalk|inquirer|ora)"],
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
+};
