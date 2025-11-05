@@ -1,0 +1,46 @@
+{
+  "name": "breve-cli",
+  "version": "0.1.0",
+  "description": "CLI para crear proyectos Express + TypeScript.",
+  "main": "dist/index.js",
+  "bin": {
+    "breve": "./bin/index.js"
+  },
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc && npm run copy-templates && npm run clean:templates",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src",
+    "copy-templates": "node scripts/copy-templates.js",
+    "clean:templates": "node scripts/clean-templates.js",
+    "clean:dist": "rm -r ./dist"
+  },
+  "keywords": [
+    "cli",
+    "express",
+    "typescript",
+    "generator"
+  ],
+  "author": "Gustavo Del Castillo",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.7.4",
+    "@typescript-eslint/eslint-plugin": "^7.3.0",
+    "@typescript-eslint/parser": "^7.3.0",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.1.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.3.6"
+  }
+}
